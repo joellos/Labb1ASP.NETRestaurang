@@ -184,7 +184,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
         }
 
         /// <summary>
-        /// Verifiera refresh token och returnera administratör (med AdminId för extra säkerhet)
+        /// Verifiera refresh token och returnera administratör
         /// </summary>
         private async Task<Administrator?> VerifyRefreshTokenAsync(Guid adminId, string refreshToken)
         {
