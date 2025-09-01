@@ -1,4 +1,7 @@
 
+using Labb1ASP.NETDatabas.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Labb1ASP.NETDatabas
 {
     public class Program
@@ -7,25 +10,29 @@ namespace Labb1ASP.NETDatabas
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Database
+            builder.Services.AddDbContext<RestaurantDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            // Authentication & Authorization  
+            builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
+
+            // Application Services
+            builder.Services.AddApplicationServices();
+            builder.Services.AddApiControllers();
+            builder.Services.AddCorsServices();
+            builder.Services.AddCustomMiddleware();
+            builder.Services.AddCachingServices();
+            builder.Services.AddHttpClientServices();
+
+            // Swagger
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerWithJwtAuth();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
+            // Middleware pipeline
+            app.UseRestaurantMiddleware(app.Environment);
             app.MapControllers();
 
             app.Run();
