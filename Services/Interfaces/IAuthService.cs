@@ -1,5 +1,4 @@
-﻿using Labb1ASP.NETDatabas.DTOs.AdministratorDTOs;
-using Labb1ASP.NETDatabas.DTOs.AuthDTOs;
+﻿using Labb1ASP.NETDatabas.DTOs.AuthDTOs;
 
 namespace Labb1ASP.NETDatabas.Services.Interfaces
 {

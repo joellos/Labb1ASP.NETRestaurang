@@ -1,5 +1,5 @@
-
 using Labb1ASP.NETDatabas.Data;
+using Labb1ASP.NETDatabas.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Labb1ASP.NETDatabas

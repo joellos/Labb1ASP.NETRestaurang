@@ -1,5 +1,4 @@
 ﻿using Labb1ASP.NETDatabas.Middleware;
-using RestaurantBookingAPI.Middleware;
 
 namespace Labb1ASP.NETDatabas.Extensions
 {
@@ -10,7 +9,7 @@ namespace Labb1ASP.NETDatabas.Extensions
         /// </summary>
         public static IApplicationBuilder UseRestaurantMiddleware(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // 1. Exception handling (måste vara först)
+           
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
@@ -23,6 +22,7 @@ namespace Labb1ASP.NETDatabas.Extensions
                 app.UseHsts();
             }
 
+
             // 2. Global exception handling middleware
             app.UseMiddleware<GlobalExceptionMiddleware>();
 
@@ -30,7 +30,7 @@ namespace Labb1ASP.NETDatabas.Extensions
             app.UseHttpsRedirection();
 
             // 4. Request logging middleware
-            app.UseMiddleware<RequestLoggingMiddleware>();
+            //app.UseMiddleware<RequestLoggingMiddleware>();
 
             // 5. CORS (före authentication)
             app.UseCors();

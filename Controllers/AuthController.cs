@@ -2,7 +2,6 @@
 using Labb1ASP.NETDatabas.DTOs.AuthDTOs;
 using Labb1ASP.NETDatabas.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Labb1ASP.NETDatabas.Controllers

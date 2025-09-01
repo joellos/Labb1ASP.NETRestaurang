@@ -1,5 +1,4 @@
-﻿using Labb1ASP.NETDatabas.DTOs.AdministratorDTOs;
-using Labb1ASP.NETDatabas.DTOs.AuthDTOs;
+﻿using Labb1ASP.NETDatabas.DTOs.AuthDTOs;
 using Labb1ASP.NETDatabas.Models;
 using Labb1ASP.NETDatabas.Repositories.Interfaces;
 using Labb1ASP.NETDatabas.Services.Interfaces;

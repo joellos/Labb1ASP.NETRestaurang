@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Labb1ASP.NETDatabas.DTOs.AdministratorDTOs
+namespace Labb1ASP.NETDatabas.DTOs.AuthDTOs
 {
     public class LoginDto
     {
