@@ -1,0 +1,6 @@
+@Labb1ASP.NETDatabas_HostAddress = http://localhost:5062
+
+GET {{Labb1ASP.NETDatabas_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
