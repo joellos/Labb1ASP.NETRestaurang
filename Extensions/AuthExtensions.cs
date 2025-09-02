@@ -88,7 +88,7 @@ namespace Labb1ASP.NETDatabas.Extensions
             services.AddAuthorization(options =>
             {
                 
-                options.AddPolicy("AdminOnly", policy =>
+                options.AddPolicy("AdminPolicy", policy =>
                 {
                     policy.RequireAuthenticatedUser();
                     policy.RequireRole("Administrator");
