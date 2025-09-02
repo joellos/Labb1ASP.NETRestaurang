@@ -139,6 +139,20 @@ namespace Labb1ASP.NETDatabas.Controllers
             return Ok(new { message = "You are an admin!", username });
         }
 
+        [Authorize]
+        [HttpGet("debug-claims")]
+        public IActionResult DebugClaims()
+        {
+            var claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList();
+            return Ok(new
+            {
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                Claims = claims,
+                HasRole = User.HasClaim("role", "Administrator"),
+                IsInRole = User.IsInRole("Administrator")
+            });
+        }
+
         // Helper endpoint för testing
         [HttpGet("{id}")]
         public async Task<ActionResult<AdministratorResponseDto>> GetAdministrator(Guid id)

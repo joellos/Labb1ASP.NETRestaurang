@@ -42,7 +42,7 @@ namespace Labb1ASP.NETDatabas.Extensions
 
                     // Claims mapping
                     NameClaimType = ClaimTypes.Name,
-                    RoleClaimType = "role",
+                    RoleClaimType = "role"
                 };
 
                 // Event handlers för debugging
@@ -91,7 +91,7 @@ namespace Labb1ASP.NETDatabas.Extensions
                 options.AddPolicy("AdminPolicy", policy =>
                 {
                     policy.RequireAuthenticatedUser();
-                    policy.RequireRole("Administrator");
+                    policy.RequireClaim(ClaimTypes.Role, "Administrator");
                 });
 
                

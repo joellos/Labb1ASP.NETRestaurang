@@ -25,9 +25,7 @@ namespace Labb1ASP.NETDatabas.Extensions
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddScoped<IMenuItemService, MenuItemService>();
-            services.AddAuthorizationBuilder()
-                .AddPolicy("AdminPolicy", policy => policy.RequireRole("Administrator"));
-
+           
 
 
             // Auth service
@@ -86,7 +84,7 @@ namespace Labb1ASP.NETDatabas.Extensions
                 options.InvalidModelStateResponseFactory = context =>
                 {
                     var errors = context.ModelState
-                        .Where(x => x.Value.Errors.Count > 0)
+                        .Where(x => x.Value?.Errors?.Count > 0) // Added null checks
                         .SelectMany(x => x.Value.Errors)
                         .Select(x => x.ErrorMessage)
                         .ToList();
