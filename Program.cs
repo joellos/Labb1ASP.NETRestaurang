@@ -16,6 +16,7 @@ namespace Labb1ASP.NETDatabas
 
             // Authentication & Authorization  
             builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
+            
 
             // Application Services
             builder.Services.AddApplicationServices();
@@ -33,8 +34,10 @@ namespace Labb1ASP.NETDatabas
 
             // Middleware pipeline
             app.UseRestaurantMiddleware(app.Environment);
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllers();
-
+           
             app.Run();
         }
     }

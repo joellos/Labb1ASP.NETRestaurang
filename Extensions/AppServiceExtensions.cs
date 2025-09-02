@@ -25,6 +25,10 @@ namespace Labb1ASP.NETDatabas.Extensions
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddScoped<IMenuItemService, MenuItemService>();
+            services.AddAuthorizationBuilder()
+                .AddPolicy("AdminPolicy", policy => policy.RequireRole("Administrator"));
+
+
 
             // Auth service
             services.AddScoped<IAuthService, AuthService>();

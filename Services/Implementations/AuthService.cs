@@ -25,33 +25,29 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             _passwordHasher = new PasswordHasher<Administrator>();
         }
 
-        /// <summary>
-        /// Autentisera administratör och returnera tokens
-        /// </summary>
+
         public async Task<TokenResponseDto?> LoginAsync(LoginDto loginDto)
         {
-            // Hitta administratör
+           
             var admin = await _administratorRepository.GetByUsernameAsync(loginDto.Username);
             if (admin == null)
                 return null;
 
-            // Verifiera lösenord
+           
             var verificationResult = _passwordHasher.VerifyHashedPassword(
                 admin, admin.PasswordHash, loginDto.Password);
 
             if (verificationResult == PasswordVerificationResult.Failed)
                 return null;
 
-            // Uppdatera senaste inloggning
+            
             await _administratorRepository.UpdateLastLoginAsync(admin.Id);
 
             // Skapa och returnera token response
             return await CreateTokenResponseAsync(admin);
         }
 
-        /// <summary>
-        /// Förnya access token med refresh token
-        /// </summary>
+       
         public async Task<TokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto request)
         {
             var admin = await VerifyRefreshTokenAsync(request.AdminId, request.RefreshToken);
@@ -78,9 +74,9 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return true;
         }
 
-        /// <summary>
-        /// Validera access token
-        /// </summary>
+       
+        // Validera access token
+     
         public async Task<bool> ValidateTokenAsync(string token)
         {
             try
@@ -97,9 +93,9 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             }
         }
 
-        /// <summary>
-        /// Skapa komplett token response
-        /// </summary>
+  
+        // Skapa komplett token response
+      
         private async Task<TokenResponseDto> CreateTokenResponseAsync(Administrator admin)
         {
             var accessToken = GenerateAccessToken(admin);
@@ -124,9 +120,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             };
         }
 
-        /// <summary>
-        /// Generera access token (JWT)
-        /// </summary>
+  
         private string GenerateAccessToken(Administrator admin)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");

@@ -131,7 +131,7 @@ namespace Labb1ASP.NETDatabas.Controllers
             return Ok(new { message = "You are authenticated!", username });
         }
 
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("admin-test")]
         public IActionResult AdminOnlyTest()
         {
