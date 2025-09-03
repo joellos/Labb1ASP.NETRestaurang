@@ -32,11 +32,15 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return customer?.ToResponseDto();
         }
 
+        /// <summary>
+        /// UPPDATERAD: Email som primär kontroll
+        /// </summary>
         public async Task<CustomerResponseDto> CreateCustomerAsync(CreateCustomerDto customerDto)
         {
-            var existingCustomer = await _customerRepository.GetByPhoneNumberAsync(customerDto.PhoneNumber);
+            // Kontrollera om EMAIL redan finns (email är nu primär identifierare)
+            var existingCustomer = await _customerRepository.GetByEmailAsync(customerDto.Email);
             if (existingCustomer != null)
-                throw new InvalidOperationException("A customer with this phone number already exists.");
+                throw new InvalidOperationException($"A customer with email '{customerDto.Email}' already exists.");
 
             var customer = customerDto.ToEntity();
             var created = await _customerRepository.CreateAsync(customer);
@@ -58,13 +62,37 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return await _customerRepository.DeleteAsync(id);
         }
 
+        /// <summary>
+        /// UPPDATERAD: Email som primär identifierare
+        /// Automatisk uppdatering av telefon och namn
+        /// </summary>
         public async Task<CustomerResponseDto> GetOrCreateCustomerAsync(string name, string phoneNumber, string email)
         {
-            var existing = await _customerRepository.GetByPhoneNumberAsync(phoneNumber);
+            // EMAIL som primär identifierare
+            var existing = await _customerRepository.GetByEmailAsync(email);
             if (existing != null)
-                return existing.ToResponseDto();
+            {
+                // Uppdatera telefon och namn automatiskt
+                var updated = false;
+                if (existing.Name != name)
+                {
+                    existing.Name = name;
+                    updated = true;
+                }
+                if (existing.PhoneNumber != phoneNumber)
+                {
+                    existing.PhoneNumber = phoneNumber;
+                    updated = true;
+                }
 
-            var customer = new Models.Customer
+                if (updated)
+                    await _customerRepository.UpdateAsync(existing);
+
+                return existing.ToResponseDto();
+            }
+
+            // Skapa ny kund
+            var newCustomer = new Models.Customer
             {
                 Name = name,
                 PhoneNumber = phoneNumber,
@@ -72,15 +100,55 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
                 CreatedAt = DateTime.UtcNow
             };
 
-            var created = await _customerRepository.CreateAsync(customer);
+            var created = await _customerRepository.CreateAsync(newCustomer);
             return created.ToResponseDto();
         }
 
+        /// <summary>
+        /// UPPDATERAD: Prioritera email över telefon
+        /// </summary>
         public async Task<CustomerResponseDto?> FindCustomerAsync(string phoneNumber, string email)
         {
-            var customer = await _customerRepository.GetByPhoneNumberAsync(phoneNumber);
-            customer ??= await _customerRepository.GetByEmailAsync(email);
+            Models.Customer? customer = null;
+
+            // SÖK FÖRST PÅ EMAIL (primär identifierare)
+            if (!string.IsNullOrEmpty(email))
+            {
+                customer = await _customerRepository.GetByEmailAsync(email);
+            }
+
+            // Sök på telefon bara om email inte gav resultat
+            if (customer == null && !string.IsNullOrEmpty(phoneNumber))
+            {
+                customer = await _customerRepository.GetByPhoneNumberAsync(phoneNumber);
+            }
+
             return customer?.ToResponseDto();
+        }
+
+        /// <summary>
+        /// NY METOD: Hitta kund baserat på email (primär)
+        /// </summary>
+        public async Task<CustomerResponseDto?> FindCustomerByEmailAsync(string email)
+        {
+            var customer = await _customerRepository.GetByEmailAsync(email);
+            return customer?.ToResponseDto();
+        }
+
+        /// <summary>
+        /// NY METOD: Hitta potentiella dubletter baserat på email
+        /// </summary>
+        public async Task<IEnumerable<CustomerResponseDto>> FindPotentialDuplicatesAsync()
+        {
+            var allCustomers = await _customerRepository.GetAllAsync();
+
+            // Hitta kunder med samma email (ska inte finnas med nya systemet)
+            var emailDuplicates = allCustomers
+                .GroupBy(c => c.Email.ToLower())
+                .Where(g => g.Count() > 1)
+                .SelectMany(g => g);
+
+            return emailDuplicates.Select(c => c.ToResponseDto());
         }
     }
 }

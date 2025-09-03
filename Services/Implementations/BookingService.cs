@@ -75,7 +75,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
                 throw new InvalidOperationException(validationResult.ErrorMessage);
             }
 
-            // 2. HITTA ELLER SKAPA KUND (förhindrar dubletter)
+            // 2. HITTA ELLER SKAPA KUND (EMAIL SOM PRIMÄR IDENTIFIERARE)
             var customer = await GetOrCreateCustomerAsync(
                 bookingDto.CustomerName,
                 bookingDto.PhoneNumber,
@@ -179,35 +179,39 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
         }
 
         /// <summary>
-        /// HJÄLPMETOD: Hitta befintlig kund eller skapa ny
-        /// Förhindrar dubletter i systemet
+        /// UPPDATERAD: EMAIL SOM PRIMÄR IDENTIFIERARE
+        /// Hitta befintlig kund eller skapa ny
         /// </summary>
         private async Task<Customer> GetOrCreateCustomerAsync(string name, string phoneNumber, string email)
         {
-            // Försök hitta befintlig kund via telefon
-            var existingCustomer = await _customerRepository.GetByPhoneNumberAsync(phoneNumber);
+            // SÖK FÖRST PÅ EMAIL (primär identifierare)
+            var existingCustomer = await _customerRepository.GetByEmailAsync(email);
+
             if (existingCustomer != null)
             {
-                // Uppdatera eventuell information (om namn eller email ändrats)
+                // UPPDATERA automatiskt telefon och namn om ändrat
                 var updated = false;
+
                 if (existingCustomer.Name != name)
                 {
                     existingCustomer.Name = name;
                     updated = true;
                 }
-                if (existingCustomer.Email != email)
+
+                if (existingCustomer.PhoneNumber != phoneNumber)
                 {
-                    existingCustomer.Email = email;
+                    existingCustomer.PhoneNumber = phoneNumber;
                     updated = true;
                 }
 
+                // Spara bara om något ändrats
                 if (updated)
                     await _customerRepository.UpdateAsync(existingCustomer);
 
                 return existingCustomer;
             }
 
-            // Skapa ny kund
+            // SKAPA NY KUND - bara om email inte finns i systemet
             var newCustomer = new Customer
             {
                 Name = name,

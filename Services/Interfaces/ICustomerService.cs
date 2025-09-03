@@ -12,5 +12,7 @@ namespace Labb1ASP.NETDatabas.Services.Interfaces
         Task<bool> DeleteCustomerAsync(int id);
         Task<CustomerResponseDto> GetOrCreateCustomerAsync(string name, string phoneNumber, string email);
         Task<CustomerResponseDto?> FindCustomerAsync(string phoneNumber, string email);
+        Task<CustomerResponseDto?> FindCustomerByEmailAsync(string email);
+        Task<IEnumerable<CustomerResponseDto>> FindPotentialDuplicatesAsync();
     }
 }
