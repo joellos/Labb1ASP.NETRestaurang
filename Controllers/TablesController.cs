@@ -9,7 +9,7 @@ namespace Labb1ASP.NETDatabas.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Policy = "AdminPolicy")] // HELA CONTROLLERN KRÄVER ADMIN
+    [Authorize(Policy = "AdminPolicy")] 
     public class TablesController : ControllerBase
     {
         private readonly ITableService _tableService;

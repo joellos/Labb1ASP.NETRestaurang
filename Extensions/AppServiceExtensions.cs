@@ -7,9 +7,7 @@ namespace Labb1ASP.NETDatabas.Extensions
 {
     public static class AppServiceExtensions
     {
-        /// <summary>
-        /// Registrerar alla applikationsspecifika services (Repositories och Services)
-        /// </summary>
+
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             // Repository registrering
@@ -34,9 +32,6 @@ namespace Labb1ASP.NETDatabas.Extensions
             return services;
         }
 
-        /// <summary>
-        /// Konfigurerar CORS för frontend-applikationer
-        /// </summary>
         public static IServiceCollection AddCorsServices(this IServiceCollection services)
         {
             services.AddCors(options =>
@@ -116,15 +111,13 @@ namespace Labb1ASP.NETDatabas.Extensions
             return services;
         }
 
-        /// <summary>
-        /// Konfigurerar caching services
-        /// </summary>
+
         public static IServiceCollection AddCachingServices(this IServiceCollection services)
         {
-            // Memory cache för att cacha meny och bord-information
+         
             services.AddMemoryCache(options =>
             {
-                options.SizeLimit = 1000; // Begränsa cache-storlek
+                options.SizeLimit = 1000; 
             });
 
             return services;

@@ -58,10 +58,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return bookings.Select(b => b.ToResponseDto());
         }
 
-        /// <summary>
-        /// KÄRNAN I VÅRT BOKNINGSSYSTEM
-        /// Denna metod innehåller ALL affärslogik för att skapa bokningar
-        /// </summary>
+
         public async Task<BookingResponseDto> CreateBookingAsync(CreateBookingDto bookingDto)
         {
             // 1. VALIDERA BOKNINGEN
@@ -178,10 +175,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return (true, string.Empty);
         }
 
-        /// <summary>
-        /// UPPDATERAD: EMAIL SOM PRIMÄR IDENTIFIERARE
-        /// Hitta befintlig kund eller skapa ny
-        /// </summary>
+
         private async Task<Customer> GetOrCreateCustomerAsync(string name, string phoneNumber, string email)
         {
             // SÖK FÖRST PÅ EMAIL (primär identifierare)

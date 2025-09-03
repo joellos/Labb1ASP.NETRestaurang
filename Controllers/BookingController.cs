@@ -21,11 +21,7 @@ namespace Labb1ASP.NETDatabas.Controllers
             _customerService = customerService;
         }
 
-        // PUBLIKA ENDPOINTS - För kunder
 
-        /// <summary>
-        /// Kunder söker lediga bord
-        /// </summary>
         [HttpGet("available-tables")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<TableResponseDto>>> GetAvailableTables([FromQuery] AvailableTablesQueryDto query)
@@ -44,9 +40,6 @@ namespace Labb1ASP.NETDatabas.Controllers
             }
         }
 
-        /// <summary>
-        /// Kunder gör bokningar
-        /// </summary>
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult<BookingResponseDto>> CreateBooking([FromBody] CreateBookingDto bookingDto)
@@ -69,9 +62,7 @@ namespace Labb1ASP.NETDatabas.Controllers
             }
         }
 
-        /// <summary>
-        /// PRIMÄR: Kunder kan hitta sina bokningar via EMAIL
-        /// </summary>
+ 
         [HttpGet("customer/email/{email}")]
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<BookingResponseDto>>> GetBookingsByEmail(string email)
@@ -117,9 +108,8 @@ namespace Labb1ASP.NETDatabas.Controllers
 
         // ADMIN ENDPOINTS - Kräver inloggning
 
-        /// <summary>
         /// Admin ser alla bokningar
-        /// </summary>
+      
         [HttpGet]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<IEnumerable<BookingResponseDto>>> GetAllBookings()
@@ -135,9 +125,7 @@ namespace Labb1ASP.NETDatabas.Controllers
             }
         }
 
-        /// <summary>
-        /// Admin ser specifik bokning
-        /// </summary>
+
         [HttpGet("{id}")]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<BookingResponseDto>> GetBookingById(int id)
@@ -156,9 +144,6 @@ namespace Labb1ASP.NETDatabas.Controllers
             }
         }
 
-        /// <summary>
-        /// Admin uppdaterar bokning
-        /// </summary>
         [HttpPut("{id}")]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<BookingResponseDto>> UpdateBooking(int id, [FromBody] UpdateBookingDto updateDto)
@@ -184,9 +169,6 @@ namespace Labb1ASP.NETDatabas.Controllers
             }
         }
 
-        /// <summary>
-        /// Admin tar bort bokning (avbokning)
-        /// </summary>
         [HttpDelete("{id}")]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> DeleteBooking(int id)
@@ -205,9 +187,7 @@ namespace Labb1ASP.NETDatabas.Controllers
             }
         }
 
-        /// <summary>
-        /// Admin ser bokningar per datum
-        /// </summary>
+ 
         [HttpGet("by-date")]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<IEnumerable<BookingResponseDto>>> GetBookingsByDate([FromQuery] DateTime date)
@@ -223,9 +203,7 @@ namespace Labb1ASP.NETDatabas.Controllers
             }
         }
 
-        /// <summary>
-        /// Admin ser bokningar för datumspan
-        /// </summary>
+
         [HttpGet("date-range")]
         [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<IEnumerable<BookingResponseDto>>> GetBookingsByDateRange(

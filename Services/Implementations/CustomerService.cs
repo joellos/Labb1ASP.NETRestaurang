@@ -32,9 +32,6 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return customer?.ToResponseDto();
         }
 
-        /// <summary>
-        /// UPPDATERAD: Email som primär kontroll
-        /// </summary>
         public async Task<CustomerResponseDto> CreateCustomerAsync(CreateCustomerDto customerDto)
         {
             // Kontrollera om EMAIL redan finns (email är nu primär identifierare)
@@ -62,10 +59,6 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return await _customerRepository.DeleteAsync(id);
         }
 
-        /// <summary>
-        /// UPPDATERAD: Email som primär identifierare
-        /// Automatisk uppdatering av telefon och namn
-        /// </summary>
         public async Task<CustomerResponseDto> GetOrCreateCustomerAsync(string name, string phoneNumber, string email)
         {
             // EMAIL som primär identifierare
@@ -104,9 +97,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return created.ToResponseDto();
         }
 
-        /// <summary>
-        /// UPPDATERAD: Prioritera email över telefon
-        /// </summary>
+ 
         public async Task<CustomerResponseDto?> FindCustomerAsync(string phoneNumber, string email)
         {
             Models.Customer? customer = null;
@@ -126,18 +117,12 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return customer?.ToResponseDto();
         }
 
-        /// <summary>
-        /// NY METOD: Hitta kund baserat på email (primär)
-        /// </summary>
         public async Task<CustomerResponseDto?> FindCustomerByEmailAsync(string email)
         {
             var customer = await _customerRepository.GetByEmailAsync(email);
             return customer?.ToResponseDto();
         }
 
-        /// <summary>
-        /// NY METOD: Hitta potentiella dubletter baserat på email
-        /// </summary>
         public async Task<IEnumerable<CustomerResponseDto>> FindPotentialDuplicatesAsync()
         {
             var allCustomers = await _customerRepository.GetAllAsync();

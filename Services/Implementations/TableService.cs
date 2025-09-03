@@ -64,9 +64,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return await _tableRepository.DeleteAsync(id);
         }
 
-        /// <summary>
-        /// KÄRNAN: Hitta lediga bord för bokning
-        /// </summary>
+
         public async Task<IEnumerable<TableResponseDto>> GetAvailableTablesAsync(AvailableTablesQueryDto queryDto)
         {
             var tablesWithCapacity = await _tableRepository.GetTablesByCapacityAsync(queryDto.NumberOfGuests);

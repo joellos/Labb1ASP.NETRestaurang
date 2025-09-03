@@ -154,9 +154,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
 
-        /// <summary>
-        /// Generera och spara refresh token
-        /// </summary>
+ 
         private async Task<string> GenerateAndSaveRefreshTokenAsync(Administrator admin)
         {
             var refreshToken = GenerateRefreshToken();
@@ -168,17 +166,12 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return refreshToken;
         }
 
-        /// <summary>
-        /// Generera slumpmässig refresh token
-        /// </summary>
+
         private static string GenerateRefreshToken()
         {
             return Guid.NewGuid().ToString();
         }
 
-        /// <summary>
-        /// Verifiera refresh token och returnera administratör
-        /// </summary>
         private async Task<Administrator?> VerifyRefreshTokenAsync(Guid adminId, string refreshToken)
         {
             var admin = await _administratorRepository.GetByIdAsync(adminId);
@@ -199,9 +192,7 @@ namespace Labb1ASP.NETDatabas.Services.Implementations
             return admin;
         }
 
-        /// <summary>
-        /// Verifiera refresh token utan AdminId (bara för revoke)
-        /// </summary>
+
         private async Task<Administrator?> VerifyRefreshTokenFromTokenOnly(string refreshToken)
         {
             var admins = await _administratorRepository.GetAllAsync();
